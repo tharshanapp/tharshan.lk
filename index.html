@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S. Tharshan - Executive CV</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f8fafc;
+            color: #334155;
+        }
+
+        .sidebar {
+            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+            color: #f1f5f9;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #1e293b;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .sidebar-header {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #94a3b8;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            border-left: 3px solid #6366f1;
+            padding-left: 0.75rem;
+        }
+
+        .impact-card {
+            transition: transform 0.2s;
+        }
+        
+        .impact-card:hover {
+            transform: translateY(-2px);
+        }
+
+        @media print {
+            body { background: white; padding: 0; }
+            .no-print { display: none; }
+            .sidebar { width: 30% !important; background: #0f172a !important; -webkit-print-color-adjust: exact; }
+            .main-content { width: 70% !important; }
+            .shadow-2xl { shadow: none !important; }
+        }
+
+
+/* --- TASK 6: recommendations (different from default) with format--- */
+        .recommendations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.8rem;
+            margin: 2rem 0 2.5rem;
+        }
+        .rec-card {
+            background: white;
+            border-radius: 30px;
+            padding: 1.8rem 1.5rem;
+            box-shadow: 0 10px 22px -12px #94a3b8;
+            border: 1px solid #eef2f6;
+            font-style: italic;
+            position: relative;
+        }
+        .rec-card::before {
+            content: "“";
+            font-size: 4rem;
+            color: #2563eb20;
+            font-family: serif;
+            position: absolute;
+            top: -0.2rem;
+            left: 1rem;
+        }
+        .rec-text {
+            margin-bottom: 1rem;
+            color: #1e293b;
+            font-size: 1rem;
+            line-height: 1.5;
+            position: relative;
+            z-index: 2;
+        }
+        .rec-author {
+            font-weight: 600;
+            font-style: normal;
+            color: #2563eb;
+            text-align: right;
+            border-top: 1px dashed #cbd5e1;
+            padding-top: 0.7rem;
+            margin-top: 0.7rem;
+        }
+
+        /* --- leave a recommendation form (TASK 7 & 9) --- */
+        .rec-form {
+            background: white;
+            border-radius: 40px;
+            padding: 2.2rem 2.5rem;
+            margin-top: 2rem;
+            box-shadow: 0 8px 22px #d9e2ef40;
+            border: 1px solid #e2e8f0;
+        }
+        .rec-form h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+        .form-group {
+            margin-bottom: 1.4rem;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 50px;
+            font-size: 1rem;
+            outline: none;
+            transition: 0.15s;
+            background: #fcfdff;
+        }
+        .form-group textarea {
+            border-radius: 30px;
+            resize: vertical;
+            min-height: 110px;
+        }
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: #2563eb;
+            background: white;
+        }
+        .btn-submit {
+            background: #0f172a;
+            color: white;
+            border: none;
+            padding: 1rem 3rem;
+            border-radius: 60px;
+            font-size: 1.2rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 8px 16px -10px #0f172a;
+            border: 1px solid #2563eb40;
+        }
+        .btn-submit:hover {
+            background: #2563eb;
+            transform: scale(1.02);
+        }
+
+
+
+    </style>
+</head>
+<body class="p-0 lg:p-10">
+    <div class="max-w-6xl mx-auto bg-white shadow-2xl flex flex-col md:flex-row rounded-3xl overflow-hidden border border-slate-200">
+        
+        <!-- LEFT SIDEBAR -->
+        <aside class="sidebar w-full md:w-[32%] p-8 flex flex-col">
+            <!-- Profile Photo with White Background -->
+            <div class="mb-6">
+                <div class="w-full aspect-square rounded-2xl overflow-hidden border-4 border-slate-700 bg-white shadow-inner mb-6">
+                    <img src="IMG_4872.jpeg" alt="S. Tharshan" class="w-full h-full object-cover">
+                </div>
+                <h1 class="text-2xl font-extrabold tracking-tight">S. THARSHAN</h1>
+                <p class="text-indigo-400 font-bold text-xs uppercase tracking-[0.2em] mt-2 leading-relaxed">Director – Systems Development & Training</p>
+            </div>
+
+            <!-- Contact Information -->
+            <div class="space-y-3 mb-8">
+                <div class="flex items-center gap-3 text-sm">
+                    <div class="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center">
+                        <i class="fas fa-envelope text-indigo-400"></i>
+                    </div>
+                    <span>tharshan9@gmail.com</span>
+                </div>
+                <div class="flex items-center gap-3 text-sm">
+                    <div class="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center">
+                        <i class="fas fa-phone text-indigo-400"></i>
+                    </div>
+                    <span>+94 77 730 4502</span>
+                </div>
+                <div class="flex items-center gap-3 text-sm italic text-slate-400">
+                    <div class="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center">
+                        <i class="fas fa-map-marker-alt text-indigo-400"></i>
+                    </div>
+                    <span>30A, 7th Lane, Dehiwala</span>
+                </div>
+            </div>
+
+            <!-- GOALS ACHIEVED (New Section Requested) -->
+            <h3 class="sidebar-header">Goals Achieved</h3>
+            <div class="space-y-3 mb-8 px-1">
+                <div class="flex gap-2">
+                    <i class="fas fa-check-circle text-indigo-400 text-[10px] mt-1"></i>
+                    <p class="text-[11px] leading-relaxed text-slate-300">Developed new Computerized Integrated Government Accounting System and implemented more than 2,000 accounting units island wide</p>
+                </div>
+                <div class="flex gap-2">
+                    <i class="fas fa-check-circle text-indigo-400 text-[10px] mt-1"></i>
+                    <p class="text-[11px] leading-relaxed text-slate-300">Developed a web application for Treasury Level Accounting Statement and Asset, Commitment Liability Mgt and Cash Mgt.</p>
+                </div>
+                <div class="flex gap-2">
+                    <i class="fas fa-check-circle text-indigo-400 text-[10px] mt-1"></i>
+                    <p class="text-[11px] leading-relaxed text-slate-300">Bond Amortization system for treasury Operations</p>
+                </div>
+                <div class="flex gap-2">
+                    <i class="fas fa-check-circle text-indigo-400 text-[10px] mt-1"></i>
+                    <p class="text-[11px] leading-relaxed text-slate-300">SLIPS system payment for Agrahara Insurance</p>
+                </div>
+            </div>
+
+            <!-- Technical Skills Stack -->
+            <h3 class="sidebar-header">Technical Skills</h3>
+            <div class="space-y-2 mb-8 px-1">
+                <div class="text-[11px] font-bold text-indigo-300">DEVELOPMENT</div>
+                <div class="flex flex-wrap gap-1.5">
+                    <span class="bg-slate-800 text-[10px] px-2 py-1 rounded">.NET</span>
+                    <span class="bg-slate-800 text-[10px] px-2 py-1 rounded">SQL Server</span>
+                    <span class="bg-slate-800 text-[10px] px-2 py-1 rounded">RBAC</span>
+                    <span class="bg-slate-800 text-[10px] px-2 py-1 rounded">SLIPS</span>
+                </div>
+                <div class="text-[11px] font-bold text-indigo-300 mt-2">ARCHITECTURE</div>
+                <div class="flex flex-wrap gap-1.5">
+                    <span class="bg-slate-800 text-[10px] px-2 py-1 rounded">Modular Design</span>
+                    <span class="bg-slate-800 text-[10px] px-2 py-1 rounded">Legacy Migration</span>
+                    <span class="bg-slate-800 text-[10px] px-2 py-1 rounded">Data Infra</span>
+                </div>
+            </div>
+
+            <!-- Education -->
+            <h3 class="sidebar-header">Education</h3>
+            <div class="space-y-4 mb-8 px-1">
+                <div>
+                    <p class="text-xs font-bold text-white">MSc Management & IT</p>
+                    <p class="text-[11px] text-slate-400">University of Kelaniya</p>
+                </div>
+                <div>
+                    <p class="text-xs font-bold text-white">Postgrad. Diploma Public Admin</p>
+                    <p class="text-[11px] text-slate-400">University of Sri Jayewardenepura</p>
+                </div>
+                <div>
+                    <p class="text-xs font-bold text-white">BBA (Hons) Financial Management</p>
+                    <p class="text-[11px] text-slate-400">University of Jaffna</p>
+                </div>
+            </div>
+
+            <!-- Professional Affiliations -->
+            <h3 class="sidebar-header">Professional Bodies</h3>
+            <div class="space-y-2 text-xs text-slate-300 px-1 mb-8">
+                <p>• Computer Society of Sri Lanka (CSSL)</p>
+                <p>• Assoc. Member, APFA Sri Lanka</p>
+                <p>• Inst. of Financial Accountants, UK (IFA)</p>
+            </div>
+        </aside>
+
+        <!-- RIGHT MAIN CONTENT -->
+        <main class="w-full md:w-[68%] p-8 lg:p-14 overflow-y-auto main-content">
+            
+            <!-- Profile Summary -->
+            <section class="mb-10">
+                <h2 class="section-title"><i class="fas fa-user-tie text-indigo-600"></i> Executive Summary</h2>
+                <p class="text-slate-600 leading-relaxed text-base">
+                    Government Financial Accounting Systems Developer and Public Financial Management (PFM) Specialist with over 14 years of experience. Developed Sri Lanka’s Government Accounting System (**New CIGAS**), covering budget execution, commitment control, and asset accounting and implemented across 2,200+ Central and Provincial councils Agencies. Digitized over Rs. 5 trillion in public assets first time in sri lanka using this system and delivered massive infrastructure cost avoidances through rapid digital innovation.
+                </p>
+            </section>
+
+            <!-- National Impact Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+                <div class="impact-card bg-indigo-50 border border-indigo-100 p-4 rounded-2xl text-center">
+                    <p class="text-2xl font-black text-indigo-600 leading-none mb-1">2.2K</p>
+                    <p class="text-[10px] uppercase tracking-tighter font-bold text-indigo-400">Institutions</p>
+                </div>
+                <div class="impact-card bg-indigo-50 border border-indigo-100 p-4 rounded-2xl text-center">
+                    <p class="text-2xl font-black text-indigo-600 leading-none mb-1">5T</p>
+                    <p class="text-[10px] uppercase tracking-tighter font-bold text-indigo-400">Assets (Rs.)</p>
+                </div>
+                <div class="impact-card bg-indigo-50 border border-indigo-100 p-4 rounded-2xl text-center">
+                    <p class="text-2xl font-black text-indigo-600 leading-none mb-1">1K+</p>
+                    <p class="text-[10px] uppercase tracking-tighter font-bold text-indigo-400">Finance Officers</p>
+                </div>
+                <div class="impact-card bg-indigo-50 border border-indigo-100 p-4 rounded-2xl text-center">
+                    <p class="text-2xl font-black text-indigo-600 leading-none mb-1">8M+</p>
+                    <p class="text-[10px] uppercase tracking-tighter font-bold text-indigo-400">Cost Saving</p>
+                </div>
+            </div>
+
+            <!-- Professional Experience -->
+            <section class="mb-10">
+                <h2 class="section-title"><i class="fas fa-briefcase text-indigo-600"></i> Experience & Leadership</h2>
+                <div class="space-y-8">
+                    <div class="relative pl-8 border-l-2 border-slate-200">
+                        <div class="absolute w-4 h-4 bg-indigo-600 border-4 border-white shadow-sm rounded-full -left-[9px] top-1"></div>
+                        <div class="flex flex-col md:flex-row md:justify-between md:items-center mb-2">
+                            <h3 class="font-extrabold text-lg text-slate-800">Director – Systems Development & Training</h3>
+                            <span class="text-xs font-bold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full">2011 – Present</span>
+                        </div>
+                        <p class="text-sm font-bold text-slate-500 mb-4">Ministry of Finance, Sri Lanka (Dept. of State Accounts)</p>
+                        <ul class="text-sm text-slate-600 space-y-3">
+                            <li class="flex gap-2"><span>•</span> <span>Developed end-to-end **SDLC for National Treasury platform** deployed across Central Government, Provincial Councils, and District Secretariats.</span></li>
+                            <li class="flex gap-2"><span>•</span> <span>Engineered the **Treasury Bond Amortization Engine** (Face value, premium, and discount management).</span></li>
+                            <li class="flex gap-2"><span>•</span> <span>Built emergency web-based reporting system during 2019 AS/400 failure; **avoided Rs. 6M hardware cost**.</span></li>
+                            <li class="flex gap-2"><span>•</span> <span>Implemented **IPSAS-aligned** multi-currency module for foreign missions and Asset Management for Rs. 5T in assets.</span></li>
+                            <li class="flex gap-2"><span>•</span> <span>Designed **Batch SLIPS module** for nationwide electronic payments during COVID-19.</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Professional Development & Workshops -->
+            <section class="mb-10">
+                <h2 class="section-title"><i class="fas fa-globe text-indigo-600"></i> International Workshops</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-100">
+                        <p class="text-xs font-extrabold text-indigo-600 mb-1">SINGAPORE (IMF)</p>
+                        <p class="text-sm font-bold">Modernizing Treasury Management</p>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-100">
+                        <p class="text-xs font-extrabold text-indigo-600 mb-1">HONG KONG</p>
+                        <p class="text-sm font-bold">Macro Economic Policies</p>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-100">
+                        <p class="text-xs font-extrabold text-indigo-600 mb-1">AUSTRALIA (GRIFFITH)</p>
+                        <p class="text-sm font-bold">Macroeconomic Management & Governance</p>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-100">
+                        <p class="text-xs font-extrabold text-indigo-600 mb-1">CHINA</p>
+                        <p class="text-sm font-bold">Cyber Crime Prevention & Investigation</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Emerging Tech & AI -->
+            <section class="mb-10">
+                <h2 class="section-title"><i class="fas fa-microchip text-indigo-600"></i> Emerging Technologies</h2>
+                <div class="bg-gradient-to-r from-indigo-500 to-purple-600 p-6 rounded-2xl text-white">
+                    <div class="flex flex-wrap gap-4 items-center">
+                        <div class="flex-1">
+                            <h4 class="font-bold mb-1 italic">Postgraduate Diploma in AI (In Progress)</h4>
+                            <p class="text-xs text-indigo-100 opacity-90">IBM Certifications: Python for Data Science, AI & Development, Prompt Engineering, Generative AI Applications.</p>
+                        </div>
+                        <i class="fas fa-robot text-4xl opacity-20"></i>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Referees -->
+            <section>
+                <h2 class="section-title"><i class="fas fa-users text-indigo-600"></i> References</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="p-4 border-2 border-slate-50 rounded-xl">
+                        <p class="font-extrabold text-slate-800">Ms. K.D.R. Olga</p>
+                        <p class="text-xs text-slate-500">Executive Director, National Commission of Women</p>
+                        <p class="text-xs text-indigo-600 mt-1 font-bold">077 774 6667</p>
+                    </div>
+                    <div class="p-4 border-2 border-slate-50 rounded-xl">
+                        <p class="font-extrabold text-slate-800">Mr. A.P Kurumbalapitiya</p>
+                        <p class="text-xs text-slate-500">Director General, Dept. of Management Audit</p>
+                        <p class="text-xs text-indigo-600 mt-1 font-bold">077 514 2846</p>
+                    </div>
+                </div>
+            </section>
+
+
+<!-- Recommendations section (TASK 6: 3 different recs, format) -->
+<section id="recommendations">
+    <h2 class="section-title">Recommendations</h2>
+    <div class="recommendations-grid" id="recContainer">
+        <!-- each card = recommendation, following format with quote and author -->
+        <div class="rec-card">
+            <div class="rec-text">Tharshan has competence in Financial Management and he is capable of designing and developingsoftware systems to cater diverse needs. He has ben successful in leading team. His communication skill, natural management qualities, Financial Management with Information Technology skills are his most precious assets.</div>
+            <div class="rec-author">— N.G Dayarathne, DG- State Accounts 12.02.2014</div>
+        </div>
+        <div class="rec-card">
+            <div class="rec-text">He evolved the Government Accounting Software from 2012 to overcome the technical obsoleting and it was implemented by him all over the Central Government as well as the Provincial Councils sucessfully.He accomodated the Govt Asset Management module in the system which is a pioneer effor in history of Public Financial Management of the Country and also it was implemented by him  sucessfully in 2015/2016. He developed and Implemented a web interface for fullfillment of Budget Plan, Cash Ceiling,  Commitment & Liability in 2017/2018 which helps to the Dept of National Budget and Treasury Operations for thier planning purpose.He is competence in Public Financial Management as well as Software Engineering .</div>
+            <div class="rec-author">— S.G. Senarathna, DG- State Accounts 18.05.2018</div>
+        </div>
+        <div class="rec-card">
+            <div class="rec-text">Appreciating the service rendered to the Department to come up with a solution at the time the AS400 Server Systemof the Dept faced a sudden breakdown creating a vacume of proper reporting mechnanism for the Dept to serve the periphery from August 2019. His devotion added with his additional compitencies in IT, were very useful to achieve the target of the Dept in the particular issue as a team!</div>
+            <div class="rec-author">— R.M.A Rathnayake, DG- State Accounts 31.12.2019</div>
+        </div>
+
+<div class="rec-card">
+            <div class="rec-text">Appreciation of honorary contribution exerted by you in implementing the New Agrahara Revenue Collection System of National Insurance Trust fund (NITF) by providing necessary guidence, Making Modification to the New CIGAS system and training the users island-wide. We truly believe that the success of this initative is mainly because of your close supervision & Dedication from the inception !</div>
+            <div class="rec-author">— Gamani N Liyanarachchi, CEO- NITF 24.03.2023</div>
+        </div>
+
+    </div>
+</section>
+
+
+
+
+
+<!-- Leave a Recommendation form (TASK 7 & 9) -->
+<div class="rec-form">
+    <h3>Leave a Recommendation</h3>
+    <div class="form-group">
+        <input type="text" id="recName" placeholder="Name (Optional)" value="">
+    </div>
+    <div class="form-group">
+        <textarea id="recMessage" placeholder="Message"></textarea>
+    </div>
+    <button class="btn-submit" id="submitRecBtn">Submit</button>
+</div>
+
+<!-- TASK 8: Home icon appears as specified (placed after form, but clearly visible) -->
+<div class="home-icon-area">
+    <a href="#" class="home-icon" title="Home"><i class="fas fa-home"></i></a>
+</div>
+
+<footer>⭐ S.Tharshan · portfolio</footer>
+
+<script>
+    (function() {
+        // TASK 7 & 9 : new recommendation gets added to list, popup confirmation.
+        const submitBtn = document.getElementById('submitRecBtn');
+        const nameInput = document.getElementById('recName');
+        const msgInput = document.getElementById('recMessage');
+        const recContainer = document.getElementById('recContainer');
+
+        function addRecommendation(author, text) {
+            if (!text.trim()) return false;  // don't add empty
+            const card = document.createElement('div');
+            card.className = 'rec-card';
+            const textDiv = document.createElement('div');
+            textDiv.className = 'rec-text';
+            textDiv.innerText = text;
+            const authorDiv = document.createElement('div');
+            authorDiv.className = 'rec-author';
+            // if no name, use "Anonymous"
+            authorDiv.innerText = '— ' + (author.trim() ? author : 'Anonymous');
+            card.appendChild(textDiv);
+            card.appendChild(authorDiv);
+            recContainer.appendChild(card);
+            return true;
+        }
+
+        submitBtn.addEventListener('click', function() {
+            const name = nameInput.value.trim();
+            const message = msgInput.value.trim();
+
+            if (message === '') {
+                alert('Please write a recommendation message.');
+                return;
+            }
+
+            // TASK 7: add recommendation to the list
+            const added = addRecommendation(name, message);
+            if (added) {
+                // TASK 9: popup confirmation dialogue
+                alert('Thank you! Your recommendation has been added.');
+                // clear fields
+                nameInput.value = '';
+                msgInput.value = '';
+            } else {
+                alert('Message cannot be empty.');
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </main>
+    </div>
+
+    <!-- Print Control -->
+    <div class="max-w-6xl mx-auto mt-8 flex justify-between items-center no-print px-4">
+        <p class="text-xs text-slate-400 font-medium italic">Updated: March 2026</p>
+        <button onclick="window.print()" class="bg-indigo-600 text-white px-8 py-3 rounded-xl font-bold hover:shadow-lg transition-all transform hover:-translate-y-1 active:scale-95 flex items-center gap-2">
+            <i class="fas fa-cloud-download-alt"></i> Export CV to PDF
+        </button>
+    </div>
+</body>
+</html>
