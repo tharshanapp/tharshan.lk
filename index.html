@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open AI Assistant - FR , Ecode, Guidline</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary-glass">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <i class="fas fa-landmark me-2"></i>
+                <span class="brand-text">Open AI Assistant</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#" onclick="showSection('chat')">
+                            <i class="fas fa-comments me-1"></i> Ask AI
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showSection('admin')">
+                            <i class="fas fa-upload me-1"></i> Upload PDF
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showSection('about')">
+                            <i class="fas fa-info-circle me-1"></i> About
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Chat Section -->
+        <section id="chat-section" class="section active">
+            <div class="container">
+                <!-- Hero Header -->
+                <div class="hero-header text-center mb-4">
+                    <h1 class="display-5 fw-bold mb-2">
+                        <i class="fas fa-robot me-2"></i>OpenGov AI Assistant
+                    </h1>
+                    <p class="lead text-muted">
+                        Your intelligent assistant for  FR, 
+                        Guidelines, and  ECodes
+                    </p>
+                </div>
+
+                <!-- Chat Container -->
+                <div class="chat-container glass-card">
+                    <!-- Chat Messages -->
+                    <div class="chat-messages" id="chat-messages">
+                        <!-- Welcome Message -->
+                        <div class="message ai-message">
+                            <div class="message-avatar">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="message-content">
+                                <div class="message-bubble ai-bubble">
+                                    <p class="mb-0">
+                                        <strong>Welcome to OpenGov AI Assistant!</strong>
+                                    </p>
+                                    <p class="mb-0 mt-2">
+                                        I can help you find information from:
+                                    </p>
+                                    <ul class="mb-0 mt-2">
+                                        <li><strong>Financial Regulations (FR)</strong></li>
+                                        <li><strong>Procurement Guidelines</strong></li>
+                                        <li><strong>Establishment Codes (ECode)</strong></li>
+                                    </ul>
+                                    <p class="mb-0 mt-2">
+                                        Select a category and ask your question below.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Input Area -->
+                    <div class="chat-input-area p-3">
+                        <div class="row g-2 align-items-end">
+                            <div class="col-md-3">
+                                <label class="form-label text-muted small">Category</label>
+                                <select class="form-select" id="category-select">
+                                    <option value="FR">
+                                        <i class="fas fa-file-invoice-dollar me-1"></i>Financial Regulations
+                                    </option>
+                                    <option value="Procurement">
+                                        <i class="fas fa-shopping-cart me-1"></i>Procurement Guidelines
+                                    </option>
+                                    <option value="ECode">
+                                        <i class="fas fa-calculator me-1"></i>ECode
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-md-7">
+                                <label class="form-label text-muted small">Your Question</label>
+                                <input type="text" class="form-control" id="question-input" 
+                                       placeholder="Enter your question here..." 
+                                       onkeypress="handleKeyPress(event)">
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-primary w-100" id="ask-button" onclick="askQuestion()">
+                                    <i class="fas fa-paper-plane me-1"></i>Ask AI
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="quick-actions mt-3 text-center">
+                    <button class="btn btn-outline-secondary btn-sm me-2" onclick="clearChat()">
+                        <i class="fas fa-trash-alt me-1"></i>Clear Chat
+                    </button>
+                    <button class="btn btn-outline-secondary btn-sm" onclick="showExamples()">
+                        <i class="fas fa-lightbulb me-1"></i>Show Examples
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Admin Section -->
+        <section id="admin-section" class="section">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="glass-card p-4">
+                            <h2 class="mb-4">
+                                <i class="fas fa-upload me-2"></i>Upload PDF Documents
+                            </h2>
+                            
+                            <!-- Login Form -->
+                            <div id="admin-login" class="mb-4">
+                                <div class="alert alert-info">
+                                    <i class="fas fa-lock me-2"></i>
+                                    Please enter the admin token to access upload features.
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Admin Token</label>
+                                    <input type="password" class="form-control" id="admin-token" 
+                                           placeholder="Enter admin token">
+                                </div>
+                                <button class="btn btn-primary" onclick="verifyAdmin()">
+                                    <i class="fas fa-sign-in-alt me-1"></i>Login
+                                </button>
+                            </div>
+
+                            <!-- Upload Form (Hidden until login) -->
+                            <div id="admin-upload" class="d-none">
+                                <div class="upload-area" id="upload-area">
+                                    <i class="fas fa-cloud-upload-alt fa-3x mb-3 text-primary"></i>
+                                    <p class="mb-2"><strong>Drag & drop PDF here</strong></p>
+                                    <p class="text-muted small">or click to browse</p>
+                                    <input type="file" id="file-input" accept=".pdf" class="d-none">
+                                </div>
+
+                                <div class="mt-4">
+                                    <label class="form-label">Category</label>
+                                    <select class="form-select" id="upload-category">
+                                        <option value="FR">Financial Regulations (FR)</option>
+                                        <option value="Procurement">Procurement Guidelines</option>
+                                        <option value="ECode">Expenditure Codes (ECode)</option>
+                                    </select>
+                                </div>
+
+                                <div class="mt-3">
+                                    <div id="upload-progress" class="d-none">
+                                        <div class="progress">
+                                            <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                                                 role="progressbar" style="width: 100%"></div>
+                                        </div>
+                                        <p class="text-muted small mt-2">Processing document...</p>
+                                    </div>
+                                </div>
+
+                                <div class="mt-3 d-flex gap-2">
+                                    <button class="btn btn-primary" id="upload-button" onclick="uploadFile()" disabled>
+                                        <i class="fas fa-upload me-1"></i>Upload & Process
+                                    </button>
+                                    <button class="btn btn-outline-secondary" onclick="logoutAdmin()">
+                                        <i class="fas fa-sign-out-alt me-1"></i>Logout
+                                    </button>
+                                </div>
+
+                                <div id="upload-result" class="mt-3"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about-section" class="section">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="glass-card p-4">
+                            <h2 class="mb-4">
+                                <i class="fas fa-info-circle me-2"></i>About OpenGov AI Assistant
+                            </h2>
+                            
+                            <div class="about-content">
+                                <h5>Purpose</h5>
+                                <p>
+                                    OpenGov AI Assistant is an intelligent system designed to help  
+                                    government officers quickly find and understand information from 
+                                    FR , 
+                                    Guidelines, and ECod.
+                                </p>
+
+                                <h5 class="mt-4">How It Works</h5>
+                                <div class="row g-3">
+                                    <div class="col-md-4">
+                                        <div class="feature-card text-center p-3">
+                                            <i class="fas fa-file-pdf fa-2x mb-2 text-primary"></i>
+                                            <h6>Document Upload</h6>
+                                            <p class="small text-muted mb-0">PDF documents are uploaded and processed</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="feature-card text-center p-3">
+                                            <i class="fas fa-database fa-2x mb-2 text-primary"></i>
+                                            <h6>Vector Storage</h6>
+                                            <p class="small text-muted mb-0">Content is converted to searchable vectors</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="feature-card text-center p-3">
+                                            <i class="fas fa-robot fa-2x mb-2 text-primary"></i>
+                                            <h6>AI Response</h6>
+                                            <p class="small text-muted mb-0">Gemini AI generates accurate answers</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <h5 class="mt-4">Key Features</h5>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-check-circle text-success me-2"></i>Natural language question answering</li>
+                                    <li><i class="fas fa-check-circle text-success me-2"></i>Source citation with page numbers</li>
+                                    <li><i class="fas fa-check-circle text-success me-2"></i>Category-specific searches</li>
+                                    <li><i class="fas fa-check-circle text-success me-2"></i>Web-based PDF upload interface</li>
+                                    <li><i class="fas fa-check-circle text-success me-2"></i>Mobile-responsive design</li>
+                                </ul>
+
+                                <h5 class="mt-4">Technology Stack</h5>
+                                <div class="tech-badges">
+                                    <span class="badge bg-primary me-1">FastAPI</span>
+                                    <span class="badge bg-success me-1">Python</span>
+                                    <span class="badge bg-info me-1">ChromaDB</span>
+                                    <span class="badge bg-warning me-1">LangChain</span>
+                                    <span class="badge bg-secondary me-1">Bootstrap 5</span>
+                                    <span class="badge bg-danger me-1">Gemini AI</span>
+                                </div>
+
+                                <div class="mt-4 p-3 bg-light rounded">
+                                    <p class="mb-0">
+                                        <strong>Developed by:</strong> Tharshan.lk<br>
+                                        <strong>Version:</strong> 1.0.0<br>
+                                        <strong>License:</strong> Government Use
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer mt-auto py-3 bg-light">
+        <div class="container text-center">
+            <p class="text-muted mb-1">
+                <i class="fas fa-landmark me-1"></i>
+                OpenGov AI Assistant - Sri Lankan Government Financial Regulations
+            </p>
+            <p class="text-muted small mb-0">
+                Developed by <a href="https://tharshan.lk" target="_blank" class="text-decoration-none">Tharshan.lk</a>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script src="app.js"></script>
+</body>
+</html>
