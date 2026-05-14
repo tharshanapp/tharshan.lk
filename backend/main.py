@@ -35,13 +35,22 @@ from ingest import PDFIngester
 
 # Get configuration from environment
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-ADMIN_TOKEN = os.getenv("ADMIN_TOKEN", "003575")
+ADMIN_TOKEN = os.getenv("ADMIN_TOKEN")
 CORS_ORIGINS = os.getenv("CORS_ORIGINS", "http://localhost:3000,http://localhost:8000").split(",")
 
 # Validate API key
 if not GEMINI_API_KEY or GEMINI_API_KEY == "":
     logger.warning("GEMINI_API_KEY not set or invalid. AI features will not work.")
     logger.warning("Please set your Gemini API key in .env file")
+
+if not GEMINI_API_KEY:
+    logger.error("GEMINI_API_KEY is missing.")
+    raise ValueError("GEMINI_API_KEY environment variable is not set.")
+
+if not ADMIN_TOKEN:
+    logger.warning("ADMIN_TOKEN not set. Using default development token.")
+    ADMIN_TOKEN = "003575"
+
 
 # ==================== Gemini API Setup ====================
 
