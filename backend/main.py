@@ -128,7 +128,8 @@ async def lifespan(app: FastAPI):
         rag_engine = get_rag_engine()
         logger.info("RAG engine initialized successfully")
     except Exception as e:
-        logger.error(f"Failed to initialize RAG engine: {e}")
+        logger.error(f"Failed to initialize RAG engine during startup: {e}")
+        logger.error("The application will continue but database operations may fail")
     yield
     # Shutdown
     logger.info("OpenGov AI Assistant shutting down...")
@@ -191,15 +192,18 @@ async def health_check():
     try:
         rag_engine = get_rag_engine()
         rag_available = True
+        rag_error = None
     except Exception as e:
         logger.warning(f"RAG engine health check failed: {e}")
         rag_available = False
+        rag_error = str(e)
     
     return {
         "status": "healthy",
         "timestamp": datetime.now().isoformat(),
         "gemini_available": GEMINI_AVAILABLE,
-        "rag_engine_available": rag_available
+        "rag_engine_available": rag_available,
+        "rag_engine_error": rag_error
     }
 
 @app.post("/ask", response_model=AskResponse)
@@ -221,7 +225,7 @@ async def ask_question(request: AskRequest):
             logger.error(f"Failed to get RAG engine: {e}")
             raise HTTPException(
                 status_code=503,
-                detail="Database connection error. Please check if the server is properly configured."
+                detail="Database connection error. RAG engine not available. Check server logs for details."
             )
         
         # Perform similarity search
@@ -312,7 +316,7 @@ Please provide a clear, accurate answer based on the context above."""
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"Error processing question: {e}")
+        logger.error(f"Error processing question: {e}", exc_info=True)
         raise HTTPException(status_code=500, detail=f"Error processing question: {str(e)}")
 
 @app.post("/admin/upload", response_model=UploadResponse)
@@ -342,6 +346,7 @@ async def upload_pdf(
     if category not in ["FR", "Procurement", "ECode"]:
         raise HTTPException(status_code=400, detail="Invalid category")
     
+    file_path = None
     try:
         # Create category folder if it doesn't exist
         category_folder = os.path.join(
@@ -350,22 +355,26 @@ async def upload_pdf(
             category
         )
         os.makedirs(category_folder, exist_ok=True)
+        logger.info(f"Category folder ready: {category_folder}")
         
         # Save file
         file_path = os.path.join(category_folder, file.filename)
         with open(file_path, "wb") as f:
             content = await file.read()
             f.write(content)
+        logger.info(f"File saved: {file_path}")
         
         # Process the uploaded PDF
         try:
             ingester = PDFIngester()
             result = ingester.ingest_single_file(file_path, category)
+            logger.info(f"Ingestion result: {result}")
         except Exception as e:
-            logger.error(f"Error during PDF ingestion: {e}")
+            logger.error(f"Error during PDF ingestion: {e}", exc_info=True)
             # Clean up uploaded file if ingestion fails
-            if os.path.exists(file_path):
+            if file_path and os.path.exists(file_path):
                 os.remove(file_path)
+                logger.info(f"Cleaned up failed upload: {file_path}")
             raise HTTPException(status_code=500, detail=f"PDF processing failed: {str(e)}")
         
         if result['status'] == 'success':
@@ -377,15 +386,17 @@ async def upload_pdf(
                 filename=file.filename
             )
         else:
+            logger.warning(f"Ingestion returned non-success status: {result}")
             raise HTTPException(status_code=400, detail=result.get('message', 'Processing failed'))
     
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"Error uploading file: {e}")
+        logger.error(f"Error uploading file: {e}", exc_info=True)
         # Clean up uploaded file if it exists
-        if 'file_path' in locals() and os.path.exists(file_path):
+        if file_path and os.path.exists(file_path):
             os.remove(file_path)
+            logger.info(f"Cleaned up file: {file_path}")
         raise HTTPException(status_code=500, detail=f"Error processing upload: {str(e)}")
 
 @app.get("/stats/{category}", response_model=StatsResponse)
@@ -493,7 +504,7 @@ async def http_exception_handler(request, exc):
 @app.exception_handler(Exception)
 async def general_exception_handler(request, exc):
     """General exception handler"""
-    logger.error(f"Unhandled error: {exc}")
+    logger.error(f"Unhandled error: {exc}", exc_info=True)
     return {
         "status": "error",
         "code": 500,
