@@ -124,8 +124,11 @@ async def lifespan(app: FastAPI):
     # Startup
     logger.info("OpenGov AI Assistant starting up...")
     # Initialize RAG engine
-    rag_engine = get_rag_engine()
-    logger.info("RAG engine initialized")
+    try:
+        rag_engine = get_rag_engine()
+        logger.info("RAG engine initialized successfully")
+    except Exception as e:
+        logger.error(f"Failed to initialize RAG engine: {e}")
     yield
     # Shutdown
     logger.info("OpenGov AI Assistant shutting down...")
@@ -185,10 +188,18 @@ async def root():
 @app.get("/health")
 async def health_check():
     """Health check endpoint"""
+    try:
+        rag_engine = get_rag_engine()
+        rag_available = True
+    except Exception as e:
+        logger.warning(f"RAG engine health check failed: {e}")
+        rag_available = False
+    
     return {
         "status": "healthy",
         "timestamp": datetime.now().isoformat(),
-        "gemini_available": GEMINI_AVAILABLE
+        "gemini_available": GEMINI_AVAILABLE,
+        "rag_engine_available": rag_available
     }
 
 @app.post("/ask", response_model=AskResponse)
@@ -204,19 +215,33 @@ async def ask_question(request: AskRequest):
     """
     try:
         # Get RAG engine
-        rag_engine = get_rag_engine()
+        try:
+            rag_engine = get_rag_engine()
+        except Exception as e:
+            logger.error(f"Failed to get RAG engine: {e}")
+            raise HTTPException(
+                status_code=503,
+                detail="Database connection error. Please check if the server is properly configured."
+            )
         
         # Perform similarity search
-        relevant_docs = rag_engine.similarity_search(
-            query=request.question,
-            category=request.category,
-            k=5
-        )
+        try:
+            relevant_docs = rag_engine.similarity_search(
+                query=request.question,
+                category=request.category,
+                k=5
+            )
+        except Exception as e:
+            logger.error(f"Similarity search error: {e}")
+            raise HTTPException(
+                status_code=500,
+                detail=f"Error searching documents: {str(e)}"
+            )
         
         # Check if we found any relevant documents
         if not relevant_docs:
             return AskResponse(
-                answer="I apologize, but I couldn't find any relevant information in the documents for your question. Please try rephrasing your question or ensure that relevant PDF documents have been uploaded to the system.",
+                answer="I apologize, but I couldn't find any relevant information in the documents for your question. Please try rephrasing your question or ensure that relevant PDF documents have been uploaded to the system. You can upload documents using the admin panel.",
                 sources=[],
                 category=request.category,
                 timestamp=datetime.now().isoformat()
@@ -284,6 +309,8 @@ Please provide a clear, accurate answer based on the context above."""
             timestamp=datetime.now().isoformat()
         )
         
+    except HTTPException:
+        raise
     except Exception as e:
         logger.error(f"Error processing question: {e}")
         raise HTTPException(status_code=500, detail=f"Error processing question: {str(e)}")
@@ -331,8 +358,15 @@ async def upload_pdf(
             f.write(content)
         
         # Process the uploaded PDF
-        ingester = PDFIngester()
-        result = ingester.ingest_single_file(file_path, category)
+        try:
+            ingester = PDFIngester()
+            result = ingester.ingest_single_file(file_path, category)
+        except Exception as e:
+            logger.error(f"Error during PDF ingestion: {e}")
+            # Clean up uploaded file if ingestion fails
+            if os.path.exists(file_path):
+                os.remove(file_path)
+            raise HTTPException(status_code=500, detail=f"PDF processing failed: {str(e)}")
         
         if result['status'] == 'success':
             return UploadResponse(
