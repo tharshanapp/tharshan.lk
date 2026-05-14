@@ -39,7 +39,7 @@ ADMIN_TOKEN = os.getenv("ADMIN_TOKEN", "003575")
 CORS_ORIGINS = os.getenv("CORS_ORIGINS", "http://localhost:3000,http://localhost:8000").split(",")
 
 # Validate API key
-if not GEMINI_API_KEY or GEMINI_API_KEY == "AIzaSyCdNq7s7cTGic6lcOcjNkGvDx6qAW2A_-A":
+if not GEMINI_API_KEY or GEMINI_API_KEY == "":
     logger.warning("GEMINI_API_KEY not set or invalid. AI features will not work.")
     logger.warning("Please set your Gemini API key in .env file")
 
