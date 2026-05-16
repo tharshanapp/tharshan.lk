@@ -36,7 +36,7 @@ from ingest import PDFIngester
 # Get configuration from environment
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 ADMIN_TOKEN = os.getenv("ADMIN_TOKEN")
-CORS_ORIGINS = os.getenv("CORS_ORIGINS", "http://localhost:3000,http://localhost:8000").split(",")
+CORS_ORIGINS = os.getenv("CORS_ORIGINS", "http://localhost:3000,http://localhost:8000,*").split(",")
 
 # Validate API key
 if not GEMINI_API_KEY or GEMINI_API_KEY == "":
@@ -143,14 +143,19 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-# CORS Configuration
+# ==================== CORS Configuration (MUST BE FIRST) ====================
+
+# Add CORS middleware before all other middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=CORS_ORIGINS,
+    allow_origins=["*"],  # Allow all origins for now, restrict later
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["*"],  # Allow all methods including POST, GET, DELETE, OPTIONS
+    allow_headers=["*"],  # Allow all headers including Authorization
+    max_age=3600,
 )
+
+logger.info("CORS middleware configured to allow all origins and methods")
 
 # ==================== Security ====================
 
@@ -206,6 +211,11 @@ async def health_check():
         "rag_engine_error": rag_error
     }
 
+@app.options("/ask")
+async def ask_options():
+    """Handle CORS preflight for /ask endpoint"""
+    return {"status": "ok"}
+
 @app.post("/ask", response_model=AskResponse)
 async def ask_question(request: AskRequest):
     """
@@ -218,6 +228,8 @@ async def ask_question(request: AskRequest):
         AskResponse with AI answer and sources
     """
     try:
+        logger.info(f"Received question: {request.question} for category: {request.category}")
+        
         # Get RAG engine
         try:
             rag_engine = get_rag_engine()
@@ -318,6 +330,11 @@ Please provide a clear, accurate answer based on the context above."""
     except Exception as e:
         logger.error(f"Error processing question: {e}", exc_info=True)
         raise HTTPException(status_code=500, detail=f"Error processing question: {str(e)}")
+
+@app.options("/admin/upload")
+async def upload_options():
+    """Handle CORS preflight for /admin/upload endpoint"""
+    return {"status": "ok"}
 
 @app.post("/admin/upload", response_model=UploadResponse)
 async def upload_pdf(
@@ -527,6 +544,8 @@ if __name__ == "__main__":
     import uvicorn
     
     logger.info("Starting OpenGov AI Assistant server...")
+    logger.info(f"Server will be available at http://0.0.0.0:8000")
+    logger.info(f"API documentation at http://0.0.0.0:8000/docs")
     uvicorn.run(
         "main:app",
         host="0.0.0.0",
