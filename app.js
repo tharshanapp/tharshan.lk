@@ -5,7 +5,18 @@
 
 // ==================== Configuration ====================
 
-const API_BASE_URL = window.location.origin;
+// Determine API base URL - handle both relative and absolute paths
+const API_BASE_URL = (() => {
+    // If we're on the same domain, use relative path
+    if (window.location.protocol === 'http:' || window.location.protocol === 'https:') {
+        // Use the origin (protocol + host + port)
+        return window.location.origin;
+    }
+    return 'http://localhost:8000';
+})();
+
+console.log('API Base URL:', API_BASE_URL);
+
 let adminToken = '';
 let selectedFile = null;
 
@@ -84,7 +95,10 @@ function askQuestion() {
     const loadingMessageId = addLoadingMessage();
     
     // Send request to API
-    fetch(`${API_BASE_URL}/ask`, {
+    const requestUrl = `${API_BASE_URL}/ask`;
+    console.log('Sending request to:', requestUrl);
+    
+    fetch(requestUrl, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -95,12 +109,16 @@ function askQuestion() {
         })
     })
     .then(response => {
+        console.log('Response status:', response.status);
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            return response.text().then(text => {
+                throw new Error(`HTTP error! status: ${response.status}, body: ${text}`);
+            });
         }
         return response.json();
     })
     .then(data => {
+        console.log('Received data:', data);
         // Remove loading message
         removeMessage(loadingMessageId);
         
@@ -110,7 +128,7 @@ function askQuestion() {
     .catch(error => {
         console.error('Error:', error);
         removeMessage(loadingMessageId);
-        addErrorMessage('Connection error. Please check your connection and try again.');
+        addErrorMessage('Connection error. Please check your connection and try again. Details: ' + error.message);
     })
     .finally(() => {
         // Re-enable button
@@ -472,7 +490,10 @@ function uploadFile() {
     formData.append('category', category);
     
     // Upload file
-    fetch(`${API_BASE_URL}/admin/upload`, {
+    const uploadUrl = `${API_BASE_URL}/admin/upload`;
+    console.log('Uploading to:', uploadUrl);
+    
+    fetch(uploadUrl, {
         method: 'POST',
         headers: {
             'Authorization': `Bearer ${adminToken}`
@@ -480,12 +501,14 @@ function uploadFile() {
         body: formData
     })
     .then(response => {
+        console.log('Upload response status:', response.status);
         if (!response.ok) {
             return response.json().then(err => { throw new Error(err.detail || 'Upload failed') });
         }
         return response.json();
     })
     .then(data => {
+        console.log('Upload success:', data);
         resultDiv.innerHTML = `
             <div class="result-success">
                 <i class="fas fa-check-circle me-2"></i>
@@ -498,6 +521,7 @@ function uploadFile() {
         removeFile();
     })
     .catch(error => {
+        console.error('Upload error:', error);
         resultDiv.innerHTML = `
             <div class="result-error">
                 <i class="fas fa-times-circle me-2"></i>
