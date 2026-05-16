@@ -171,9 +171,9 @@ async def verify_admin_token(authorization: Optional[str] = Header(None)):
 
 # ==================== API Endpoints ====================
 
-@app.get("/")
+@app.get("/api")
 async def root():
-    """Root endpoint with API information"""
+    """Root API endpoint with API information"""
     return {
         "name": "OpenGov AI Assistant API",
         "version": "1.0.0",
@@ -245,7 +245,7 @@ async def ask_question(request: AskRequest):
         # Check if we found any relevant documents
         if not relevant_docs:
             return AskResponse(
-                answer="I apologize, but I couldn't find any relevant information in the documents for your question. Please try rephrasing your question or ensure that relevant PDF documents have been uploaded to the system. You can upload documents using the admin panel.",
+                answer="I apologize, but I couldn't find any relevant information in the documents for your question. Please try rephrasing your question or ensure that relevant PDF documents have been uploaded.",
                 sources=[],
                 category=request.category,
                 timestamp=datetime.now().isoformat()
@@ -479,15 +479,25 @@ async def ingest_category(
 
 # ==================== Static Files (Frontend) ====================
 
-# Mount frontend static files
-frontend_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "frontend")
-if os.path.exists(frontend_path):
-    app.mount("/frontend", StaticFiles(directory=frontend_path, html=True), name="frontend")
-    
-    @app.get("/")
-    async def serve_frontend():
-        """Serve the frontend application"""
-        return FileResponse(os.path.join(frontend_path, "index.html"))
+# Mount frontend static files BEFORE defining catch-all route
+frontend_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "")
+logger.info(f"Frontend directory: {frontend_dir}")
+
+# Serve index.html at root
+@app.get("/", include_in_schema=False)
+async def serve_index():
+    """Serve the main frontend HTML file"""
+    index_path = os.path.join(frontend_dir, "index.html")
+    if os.path.exists(index_path):
+        return FileResponse(index_path, media_type="text/html")
+    else:
+        logger.warning(f"index.html not found at {index_path}")
+        return {"error": "Frontend not found"}
+
+# Mount static files for CSS, JS, etc.
+if os.path.exists(frontend_dir):
+    app.mount("/static", StaticFiles(directory=frontend_dir), name="static")
+    logger.info(f"Static files mounted from {frontend_dir}")
 
 # ==================== Error Handlers ====================
 
