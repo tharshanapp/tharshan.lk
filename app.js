@@ -7,7 +7,7 @@
 
 // Determine API base URL based on environment
 // Support both HTTP and HTTPS
-const API_BASE_URL = window.location.origin || 'http://localhost:8000';
+const API_BASE_URL = https://tharshan-lk.onrender.com';
 let adminToken = '';
 let selectedFile = null;
 
